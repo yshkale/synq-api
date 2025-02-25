@@ -14,6 +14,7 @@ app.use(cors());
 app.use(morgan("dev"));
 
 app.use("/api/v1/users", require("./routes/userRoutes"));
+app.use("/api/v1/tasks", require("./routes/taskRoutes"));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

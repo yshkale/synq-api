@@ -27,7 +27,7 @@ const protect = async function (req, res, next) {
     }
   } catch (err) {
     return res.status(401).json({
-      message: err.message,
+      message: `Unauthorized! ${err.message}`,
     });
   }
 };
