@@ -54,7 +54,10 @@ const getAllTasks = async function (req, res) {
 
     return res.status(200).json({
       success: true,
-      data: tasks,
+      data: {
+        user: req.user,
+        tasks,
+      },
     });
   } catch (err) {
     return res.status(500).json({
