@@ -2,6 +2,10 @@ const { Schema, model } = require("mongoose");
 
 const taskSchema = new Schema(
   {
+    completed: {
+      type: Boolean,
+      required: true,
+    },
     title: {
       type: String,
       required: true,

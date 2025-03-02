@@ -2,7 +2,15 @@ const Task = require("../models/Task");
 
 const createTask = async function (req, res) {
   try {
-    const { title, description, priority, project, labels, dueDate } = req.body;
+    const {
+      completed,
+      title,
+      description,
+      priority,
+      project,
+      labels,
+      dueDate,
+    } = req.body;
     const userId = req.user.id;
 
     if (!title) {
@@ -13,6 +21,7 @@ const createTask = async function (req, res) {
 
     //create a task instance from model
     const newTask = await Task({
+      completed,
       title,
       description,
       priority,
