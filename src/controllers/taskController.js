@@ -61,11 +61,19 @@ const getAllTasks = async function (req, res) {
       ...filter,
     });
 
+    const allTasks = await Task.find({
+      user: userId,
+    });
+    const projects = [
+      ...new Set(allTasks?.map((task) => task.project).filter(Boolean)),
+    ];
+
     return res.status(200).json({
       success: true,
       data: {
         user: req.user,
         tasks,
+        projects,
       },
     });
   } catch (err) {
