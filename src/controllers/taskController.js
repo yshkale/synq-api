@@ -64,16 +64,18 @@ const getAllTasks = async function (req, res) {
     const allTasks = await Task.find({
       user: userId,
     });
-    const projects = [
+    const userProjects = [
       ...new Set(allTasks?.map((task) => task.project).filter(Boolean)),
     ];
+    const userLabels = [...new Set(allTasks?.flatMap((task) => task.labels))];
 
     return res.status(200).json({
       success: true,
       data: {
         user: req.user,
         tasks,
-        projects,
+        projects: userProjects,
+        labels: userLabels,
       },
     });
   } catch (err) {
