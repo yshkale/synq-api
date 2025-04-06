@@ -70,4 +70,26 @@ const userLogin = async (req, res) => {
   }
 };
 
-module.exports = { createUser, userLogin };
+const getUserData = async (req, res) => {
+  const user = req.user;
+
+  try {
+    if (!user) {
+      res.status(404).json({
+        message: "User not found. Please contact support!",
+      });
+    }
+
+    res.status(200).json({
+      data: {
+        user,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
+module.exports = { createUser, userLogin, getUserData };
