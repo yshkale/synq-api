@@ -1,7 +1,5 @@
 const { sign } = require("jsonwebtoken");
 const User = require("../models/User");
-const sendEmail = require("../utils/email");
-const crypto = require("crypto");
 
 const createUser = async (req, res) => {
   try {
