@@ -1,5 +1,7 @@
 const { sign } = require("jsonwebtoken");
 const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const mongoose = require("mongoose");
 
 const createUser = async (req, res) => {
   try {
@@ -92,8 +94,50 @@ const getUserData = async (req, res) => {
   }
 };
 
+const updateUserData = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { name, email, oldPassword, newPassword } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check old password if newPassword is being updated
+    if (newPassword) {
+      const isMatch = await bcrypt.compare(oldPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: "Old password is incorrect!" });
+      }
+
+      user.password = newPassword;
+    }
+
+    // Update other fields
+    if (name) user.name = name;
+    if (email) user.email = email;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (err) {
+    console.error("Update error:", err);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
 module.exports = {
   createUser,
   userLogin,
   getUserData,
+  updateUserData,
 };
